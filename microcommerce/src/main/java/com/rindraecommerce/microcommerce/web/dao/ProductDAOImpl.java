@@ -1,0 +1,41 @@
+package com.rindraecommerce.microcommerce.web.dao;
+
+import java.util.List;
+
+import org.springframework.stereotype.Repository;
+
+import com.rindraecommerce.microcommerce.model.Product;
+
+@Repository
+public class ProductDAOImpl implements IProductDAO {
+	
+	public static List<Product> products = new java.util.ArrayList<>();
+	
+	static {
+		products.add(new Product(1, "Ordinateur portable", 350));
+		products.add(new Product(2, "Tablette", 150));
+		products.add(new Product(3, "Smartphone", 200));
+	}
+	
+	@Override
+	public List<Product> findAll() {
+		return this.products;
+	}
+
+	@Override
+	public Product findById(int id) {
+		for (Product product : products) {
+			if (product.getId() == id) {
+				return product;
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public Product save(Product product) {
+		this.products.add(product);
+		return product;
+	}
+
+}
