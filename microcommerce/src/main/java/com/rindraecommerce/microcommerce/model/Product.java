@@ -1,19 +1,25 @@
 package com.rindraecommerce.microcommerce.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(value = { "prixAchat", "id"})
 public class Product {
 	private int id;
 	private String nom;
 	private int prix;
+	private int prixAchat;
 	
 	public Product() {
 		super();
 	}
 	
-	public Product(int id, String nom, int prix) {
+	public Product(int id, String nom, int prix, int prixAchat) {
 		super();
 		this.id = id;
 		this.nom = nom;
 		this.prix = prix;
+		this.prixAchat = prixAchat;
 	}
 
 	public int getId() {
@@ -40,6 +46,14 @@ public class Product {
 		this.prix = prix;
 	}
 	
+	public int getPrixAchat() {
+		return prixAchat;
+	}
+
+	public void setPrixAchat(int prixAchat) {
+		this.prixAchat = prixAchat;
+	}
+
 	@Override
 	public String toString() {
 		return "Product [id=" + this.id + ", nom=" + this.nom + ", prix=" + this.prix + "]";

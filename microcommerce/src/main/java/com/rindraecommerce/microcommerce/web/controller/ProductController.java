@@ -1,12 +1,16 @@
 package com.rindraecommerce.microcommerce.web.controller;
 
+import java.net.URI;
 import java.util.List;
+import java.util.Objects;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.rindraecommerce.microcommerce.model.Product;
 import com.rindraecommerce.microcommerce.web.dao.IProductDAO;
@@ -33,8 +37,16 @@ public class ProductController {
 	}
 	
 	@PostMapping("/Produits")
-	public void ajouterProduit(@RequestBody	Product product) {
-		this.productDAO.save(product);
+	public ResponseEntity<Product> ajouterProduit(@RequestBody	Product product) {
+		Product productRecentlyAdded = this.productDAO.save(product);
+		if (Objects.isNull(productRecentlyAdded)) {
+			return ResponseEntity.noContent().build();
+		}
+		URI location = ServletUriComponentsBuilder
+						.fromCurrentRequest().path("/{id}")
+						.buildAndExpand(productRecentlyAdded.getId())
+						.toUri();
+		return ResponseEntity.created(location).build();
 	}
 
 

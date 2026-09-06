@@ -12,9 +12,9 @@ public class ProductDAOImpl implements IProductDAO {
 	public static List<Product> products = new java.util.ArrayList<>();
 	
 	static {
-		products.add(new Product(1, "Ordinateur portable", 350));
-		products.add(new Product(2, "Tablette", 150));
-		products.add(new Product(3, "Smartphone", 200));
+		products.add(new Product(1, "Ordinateur portable", 350, 300));
+		products.add(new Product(2, "Tablette", 150, 100));
+		products.add(new Product(3, "Smartphone", 200, 125));
 	}
 	
 	@Override
