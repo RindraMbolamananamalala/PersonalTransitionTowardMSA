@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.rindraecommerce.microcommerce.model.Product;
@@ -28,6 +30,11 @@ public class ProductController {
 	@GetMapping("/Produits/{id}")
 	public Product listeProduits(@PathVariable int id) {
 		return this.productDAO.findById(id);
+	}
+	
+	@PostMapping("/Produits")
+	public void ajouterProduit(@RequestBody	Product product) {
+		this.productDAO.save(product);
 	}
 
 
