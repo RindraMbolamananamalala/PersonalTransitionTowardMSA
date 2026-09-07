@@ -3,7 +3,6 @@ package com.rindraecommerce.microcommerce.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-@JsonIgnoreProperties(value = { "prixAchat", "id"})
 public class Product {
 	private int id;
 	private String nom;

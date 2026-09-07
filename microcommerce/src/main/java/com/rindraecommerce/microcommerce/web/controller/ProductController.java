@@ -14,7 +14,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.rindraecommerce.microcommerce.model.Product;
 import com.rindraecommerce.microcommerce.web.dao.IProductDAO;
-import com.rindraecommerce.microcommerce.web.dao.ProductDAOImpl;
 
 @RestController
 public class ProductController {
@@ -38,6 +37,7 @@ public class ProductController {
 	
 	@PostMapping("/Produits")
 	public ResponseEntity<Product> ajouterProduit(@RequestBody	Product product) {
+		System.out.println("Here Product");
 		Product productRecentlyAdded = this.productDAO.save(product);
 		if (Objects.isNull(productRecentlyAdded)) {
 			return ResponseEntity.noContent().build();
