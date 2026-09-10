@@ -31,6 +31,13 @@ jobs:
             
             # Envoi vers Azure
             docker push microcommerce.azurecr.io/microcommerce:latest
+      
+       # --- FORCING AZURE TO UPLOAD (TO PULL) THE LATEST IMAGE ---
+      - run:
+          name: Trigger Azure Webhook (Force Pull)
+          command: |
+            # On envoie un signal à Azure pour lui dire de télécharger la nouvelle image
+            curl -X POST "$AZURE_WEBHOOK_URL"
 
 workflows:
   test-and-deploy:
