@@ -4,33 +4,39 @@ orbs:
 jobs:
   build-and-test:
     docker:
-      - image: cimg/openjdk:19.0.1
+      - image: cimg/openjdk:21.0
+	working_directory: ~/project/microcommerce
     steps:
-      - checkout
+      - checkout:
+			path: ~/project
+	  
       - run:
           name: Build
           command: mvn -B -DskipTests clean package
       - run:
           name: Test
           command: mvn test
+	  - persist_to_workspace:
+		  root: target
+		  paths:
+		  	- "*.jar"
 
   deploy-docker-image:
-    executor:
-      name: docker/docker
-      tag: "3.6"
+	docker:
+		- image: cimg/base:stable
+	working_directory: ~/project/microcommerce
     steps:
-      - checkout
-      - docker/install-docker-tools
+      - checkout:
+			path: ~/project
       - setup_remote_docker:
           version: 20.10.14
           docker_layer_caching: true
-
       - run:
           name: "Build and push Docker image"
           command: |
-            docker login -u $DOCKER_USER -p $DOCKER_PASS springbootapi.azurecr.io
-            docker build -t springbootapi.azurecr.io/springbootapi:latest .
-            docker push springbootapi.azurecr.io/springbootapi:latest
+		  	echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin springbootapi.azurecr.io
+		    docker build -t microcommerce.azurecr.io/microcommerce:latest .
+		    docker push microcommerce.azurecr.io/springbootapi:latest
 
 workflows:
   test-and-deploy:
