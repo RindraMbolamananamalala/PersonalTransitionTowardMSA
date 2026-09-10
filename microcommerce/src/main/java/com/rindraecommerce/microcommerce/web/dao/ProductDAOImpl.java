@@ -17,6 +17,7 @@ public class ProductDAOImpl implements IProductDAO {
 		products.add(new Product(3, "Smartphone", 200, 125));
 		products.add(new Product(4, "Satellite USB", 100, 75));
 		products.add(new Product(4, "Ecouteurs Bluetooth", 50, 35));
+		products.add(new Product(4, "Chargeur Dell", 35, 25));
 	}
 	
 	@Override
