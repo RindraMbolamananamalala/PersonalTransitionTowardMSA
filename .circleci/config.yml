@@ -37,7 +37,7 @@ jobs:
       - run:
           name: "Build and push Docker image"
           command: 
-            echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin springbootapi.azurecr.io
+            echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin microcommerce.azurecr.io
             docker build -t microcommerce.azurecr.io/microcommerce:latest .
             docker push microcommerce.azurecr.io/microcommerce:latest
 
