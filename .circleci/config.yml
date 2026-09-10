@@ -34,12 +34,19 @@ jobs:
           docker_layer_caching: false
       - attach_workspace:
           at: target
-      - run:
-          name: "Build and push Docker image"
-          command: 
-            echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin microcommerce.azurecr.io
-            docker build -t microcommerce.azurecr.io/microcommerce:latest .
-            docker push microcommerce.azurecr.io/microcommerce:latest
+      - docker/login:
+          registry: microcommerce.azurecr.io
+          username: DOCKER_USER 
+          password: DOCKER_PASS
+      - docker/build:
+          image: microcommerce
+          registry: microcommerce.azurecr.io
+          tag: latest
+          path: .
+      - docker/push:
+          image: microcommerce
+          registry: microcommerce.azurecr.io
+          tag: latest
 
 workflows:
   test-and-deploy:
