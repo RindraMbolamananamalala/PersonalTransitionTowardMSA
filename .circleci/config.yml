@@ -1,6 +1,5 @@
 version: 2.1
-orbs:
-  docker: circleci/docker@2.1.4
+
 jobs:
   build-and-test:
     docker:
@@ -8,45 +7,30 @@ jobs:
     working_directory: ~/project/microcommerce
     steps:
       - checkout:
-         path: ~/project
-         
+          path: ~/project
       - run:
-          name: Build
-          command: mvn -B -DskipTests clean package
-      - run:
-          name: Test
-          command: mvn test
-      - persist_to_workspace:
-         root: target
-         paths:
-            - "*.jar"
+          name: Build and Test
+          command: mvn -B clean package
 
   deploy-docker-image:
-    docker:
-       - image: cimg/base:stable
-    resource_class: medium
+    # On utilise une machine virtuelle complète pour éviter les erreurs de "Remote Docker"
+    machine:
+      image: ubuntu-2204:2024.01.1 
     working_directory: ~/project/microcommerce
     steps:
       - checkout:
-         path: ~/project
-      - setup_remote_docker:
-          version: default
-          docker_layer_caching: false
-      - attach_workspace:
-          at: target
-      - docker/login:
-          registry: microcommerce.azurecr.io
-          username: DOCKER_USER 
-          password: DOCKER_PASS
-      - docker/build:
-          image: microcommerce
-          registry: microcommerce.azurecr.io
-          tag: latest
-          path: .
-      - docker/push:
-          image: microcommerce
-          registry: microcommerce.azurecr.io
-          tag: latest
+          path: ~/project
+      - run:
+          name: Build and Push Docker Image
+          command: |
+            # Connexion sécurisée à Azure
+            echo "$DOCKER_PASS" | docker login microcommerce.azurecr.io -u "$DOCKER_USER" --password-stdin
+            
+            # Construction de l'image (le Dockerfile s'occupe de tout)
+            docker build -t microcommerce.azurecr.io/microcommerce:latest .
+            
+            # Envoi vers Azure
+            docker push microcommerce.azurecr.io/microcommerce:latest
 
 workflows:
   test-and-deploy:
